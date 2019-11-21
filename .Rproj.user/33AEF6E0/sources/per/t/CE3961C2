@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572324411033.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2437661588",
+    "id" : "CE3961C2",
+    "lastKnownWriteTime" : 1574345010,
+    "last_content_update" : 1574345010868,
+    "path" : "C:/Users/gieko/Desktop/KURS_PROJECT/calculator/ui.R",
+    "project_path" : "calculator/ui.R",
+    "properties" : {
+        "cursorPosition" : "19,65",
+        "scrollLine" : "8"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
