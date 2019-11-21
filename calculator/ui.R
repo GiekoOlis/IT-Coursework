@@ -8,82 +8,118 @@ shinyUI(
         
         #theme = "trtr.css",
         theme = shinytheme("superhero"), 
-    navlistPanel(id ="menu", "Прогноз",well = FALSE, widths = c(3,8),
+    navlistPanel(id ="menu", "Прогноз",well = FALSE, widths = c(3,9),
         tabPanel("Файл",h4("Подключите таблицу с данными о пациентах"),column(12, 
             fileInput("file", h3(""),placeholder="выберите файл")),
         tags$style("#file{text-align:center; ")),
         tabPanel("Калькулятор",
-                 fluidPage( h4("Пациент"),
-                            checkboxGroupInput("param", "Выберите плз:",
-                                               c(
-                                                   "dfgh"="sfdg",
-                                                   "dfgh"="sfdg",
-                                               )
-                            )
+                 style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
+                 h1("Калькулятор"), tags$style("h1{text-align:center;}"), br(),
+                 h4("Выберите параметры, учитывающиеся при расчете вероятности осложнений при лечении фибрилляции предсердий"),
+                 tags$style("h4{text-align:center;}"),
+                   fluidPage(h5("Эхо КГ"),
+                            column(3,
+                                    checkboxInput("LP", label = "ЛП", value = FALSE)),
+                            column(3,
+                                   checkboxInput("IMMLZH", label = "ИММЛЖ", value = FALSE)),
+                            column(3,
+                                   checkboxInput("KDR", label = "КДР", value = FALSE)),
+                            column(3,
+                                   checkboxInput("FV", label = "ФВ", value = FALSE)),
+                            h5("Биохимические показатели"),
+                            column(3,
+                                   checkboxInput("", label = "ОХ", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ЛПВП", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Глюкоза", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Галлектин", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "СРБ", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Мочевая кислота", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "СКФ", value = FALSE))),
+                 fluidPage(h5("Гемодинамические показатели"),
+                            column(3,
+                                   checkboxInput("", label = "САД", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ДАД", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ЧСС", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ХСН стадия", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ХСН ФК", value = FALSE))),
+                          
                             
-                 ),
+                 fluidPage(h5("Вообще другое"),
+                            column(3,
+                                   checkboxInput("", label = "ЛПНП", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "ТГ", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Калий", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Мочевина", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Креатинин", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Фибриноген", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "NTproBNP", value = FALSE)),
+                            column(3,
+                                   checkboxInput("", label = "Терапия", value = FALSE))),
+                           
                      fluidPage( h4("Пациент"),
                         
-                         column(4,
+                         column(4,textInput("surname", "Фамилия", placeholder="введите фамилию")),
+                         column(4, textInput("name", "Имя", placeholder="введите имя")),
+                         column(4, textInput("fname", "Отчество", placeholder="введите отчество")),
                                
-                                textInput("surname", "Фамилия", placeholder="введите фамилию"),
-                                 tags$style("#surname{text-align:center;background-color:#363636; color: #FFFFFF;} 
-                                    #surname:hover{ text-align:center;
-                                        border: solid #df691a;} }")
+                                 
+                                 
                          ),
-                         column(4,
-                                
-                                textInput("name", "Имя", placeholder="введите имя"),
-                                tags$style("#name{text-align:center;background-color:#363636; color: #FFFFFF;} 
-                                    #name:hover{ text-align:center;
-                                        border: solid #df691a;} } ")
-                         ),
-                         column(4,
-                                
-                                textInput("fname", "Отчество", placeholder="введите отчество"),
-                                tags$style("#fname{text-align:center;background-color:#363636; color: #FFFFFF;} 
-                                    #fname:hover{ text-align:center;
-                                        border: solid #df691a;
-                                           box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);} } ")
-                                )),
             
                          fluidPage( hr(),
                              h4("ЭХО КГ"),
                              column(4,
-                                    
-                                    
                                     numericInput("LP", "ЛП:", min = 0, max = 10, value = 4.6, step = 0.5, width = 300),
-                                    tags$style("#LP{background-color:#363636; color: #FFFFFF}} "),
                                     numericInput("IMMLZH", "ИММЛЖ:", min = 0, max = 300, value = 124, step = 1, width = 300),
-                                    tags$style("#IMMLZH{background-color:#363636; color: #FFFFFF}} ")
-                                    
                              ),
                              column(4,
-                                    
                                     numericInput("KDR", "КДР:", min = 0, max = 20, value = 5.8, step = 0.5, width = 300),
-                                    tags$style("#KDR{background-color:#363636; color: #FFFFFF}} "),
                                     numericInput("FV", "ФВ:", min = 0, max = 100, value = 59, step = 1, width = 300),
-                                    tags$style("#FV{background-color:#363636; color: #FFFFFF}} ")
                              )
                          
                 ),
             fluidPage( hr(), h4("Биохимические показатели"),
-                
                              column(4,
-                                   
                                     numericInput("OK", "Общий холестирин:", min = 0, max = 10, value = 4.97, step = 0.5, width = 300),
                                     numericInput("LPV", "ЛПВП:", min = 0, max = 5, value = 1.42, step = 0.5, width = 300),
                                     numericInput("GL", "Глюкоза:", min = 0, max = 10, value = 5.93, step = 1, width = 300),
-                                    numericInput("GAL", "Галлектин:", min = 0, max = 150, value = 16.34, step = 1, width = 300)
+                                    numericInput("GAL", "Галлектин:", min = 0, max = 150, value = 16.34, step = 1, width = 300),
                             ),
                              column(4, 
                                     numericInput("NUP", "НУП:", min = 0, max = 300, value = 98.7, step = 1, width = 300),
                                     numericInput("SRB", "СРБ:", min = 0, max = 15, value = 5.6, step = 0.5, width = 300),
                                     numericInput("MK", "Мочевя кислота:", min = 0, max = 900, value = 234.1, step = 1, width = 300),
-                                    numericInput("SKF", "СКФ:", min = 0, max = 200, value = 70.4, step = 1, width = 300)
+                                    numericInput("SKF", "СКФ:", min = 0, max = 200, value = 70.4, step = 1, width = 300),
                             )
                       ),
-            
+            fluidPage( hr(), h4("Гемодинамические показатели"),
+                    column(4,numericInput("SAD", "САД", min = 0, max = 300, value = 152, step = 1, width = 300)),
+                    column(4, numericInput("DAD", "ДАД:", min = 0, max = 150, value = 80, step = 1, width = 300)),
+                    column(4,numericInput("CHSS", "ЧСС:", min = 0, max = 150, value = 73, step = 1, width = 300)),
+                    column(4, sliderInput("HSNFK", "ХСН ФК",min = 0, max = 4, value = 2)),
+                    column(4,sliderInput("HSNS", "ХСН стадия",min = 0, max = 3, value = 1))),
+            fluidPage( hr(), h4("Коморбидные заболевания"), 
+                    column(2, checkboxInput("HOBL", label = "ХОБЛ", value = FALSE)),
+                    column(2,checkboxInput("GZ", label = "Гипотериоз", value = FALSE)),
+                    column(2,checkboxInput("TZ", label = "Тимотоксикоз", value = FALSE)),
+                    column(2,checkboxInput("SD", label = "Сахарный диабет", value = FALSE)),
+                    column(2,checkboxInput("AO", label = "Абдоминальное ожирение", value = FALSE))),
             fluidPage(hr(),h4("Прогноз"),
                       
                              fluidRow(
@@ -95,25 +131,27 @@ shinyUI(
                              br(),
                              fluidRow(
                                  column(2, "ЭИТ"),
-                                 column(2, ("EFP")),
-                                 column(2, ("EPZ")),
-                                 column(2, ("EKEYA")),
-                                 column(2, ("EHSN"))),
+                                 column(2, htmlOutput("EFP")),
+                                 column(2, htmlOutput("EPZ")),
+                                 column(2, htmlOutput("EKEYA")),
+                                 column(2, htmlOutput("EHSN"))),
                              
                              br(),
                              fluidRow(
                                  column(2, "Без ЭИТ"),
-                                 column(2, ("BFP")),
-                                 column(2, ("BPG")),
-                                 column(2, ("BKE")),
-                                 column(2, ("BHSN"))),
+                                 column(2, htmlOutput("BFP")),
+                                 column(2, htmlOutput("BPG")),
+                                 column(2, htmlOutput("BKE")),
+                                 column(2, htmlOutput("BHSN"))),
                              
-                             br())
+                             br(),br(),br(),br())
                          ),
         
         tabPanel("Помощь",h4("не дождетесь, в России же живете")), 
         tabPanel("О разработчке(ах?)",h4("ну тут все понятно, уебок делал")),
-        tabPanel("Текст задания курсача",
+        tabPanel("Текст задания курсача", 
+        style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
+                 
         h3("Создайте онлайн калькулятор для расчета вероятности осложнений при лечении фибрилляции предсердий"),
         h4(" Используемые технологии: Shiny, R, - обязательно HTML, Javascript по желанию."),
         h4("Требование к калькулятору:"),
@@ -132,8 +170,51 @@ shinyUI(
         h4("8. Во вкладке о программе написать сведения о себе как о разработчике. "),
         h4("9. На оценку 3 можно просто реализовать существующий дизайн, без размещения приложения в интернете. На оценки выше нужно разработать собственный дизайн, главная цель максимальная интуитивная понятность и современный деловой дизайн (можно не строго деловой) + размещение в интернете. "),
         h4("10. Для выставления оценки архивируйте winrar-ом работающий проект без пароля. Название архива calculator_(YOUR_FIO).rar. Прикрепите архив. Если разместили в интернете добавьте ссылку в ответе.
-")),
-       # tags$style("color:Black;"),
+")), 
+        tags$style("
+                    
+                   
+                   
+                   
+                   
+                                    
+                                    #surname{text-align:center;background-color:#363636; color: #FFFFFF;} 
+                                    #surname:focus{ text-align:center;border: solid #df691a;} 
+                                    #name{text-align:center;background-color:#363636; color: #FFFFFF;} 
+                                    #name:focus{ text-align:center;border: solid #df691a;} 
+                                    #fname{text-align:center;background-color:#363636; color: #FFFFFF;} 
+                                    #fname:focus{ text-align:center;border: solid #df691a;}   
+                                    #LP{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #LP:focus{text-align:center;border: solid #df691a;}
+                                    #IMMLZH{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #IMMLZH:focus{text-align:center; border: solid #df691a;}
+                                    #KDR{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #KDR:focus{text-align:center; border: solid #df691a;}
+                                    #FV{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #FV:focus{text-align:center;border: solid #df691a;}
+                                    #OK{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #OK:focus{text-align:center;border: solid #df691a;}
+                                    #LPV{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #LPV:focus{text-align:center;border: solid #df691a;}
+                                    #GL{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #GL:focus{text-align:center;border: solid #df691a;}
+                                    #GAL{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #GAL:focus{text-align:center;border: solid #df691a;}
+                                    #NUP{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #NUP:focus{text-align:center;border: solid #df691a;}
+                                    #SRB{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #SRB:focus{text-align:center;border: solid #df691a;}
+                                    #MK{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #MK:focus{text-align:center;border: solid #df691a;}
+                                    #SKF{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #SKF:focus{text-align:center;border: solid #df691a;}
+                                    #SAD{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #SAD:focus{text-align:center;border: solid #df691a;}
+                                    #DAD{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #DAD:focus{text-align:center;border: solid #df691a;}
+                                    #CHSS{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #CHSS:focus{text-align:center;border: solid #df691a;}
+                "),
         mainPanel()
     )
     )
