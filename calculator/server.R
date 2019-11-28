@@ -18,7 +18,6 @@ shinyServer(
         #data = read.table(file = input$file, header = true, sep = ";",dec = ",",nrows=100)
         
         ACTR=0.5
-        #С ЭИТ
         #efp - вероятность рецидива ФП 
         efp <- reactive((exp(-9.74+1.82*input$LP+0.41*input$HSNFK-0.01*input$IMMLZH-0.24*input$SRB+0.35*input$GL+0.003*input$GAL+0.06*input$FV-0.02*input$SAD+2.48*input$GZ+1.72*input$TZ))/(1+exp(-9.74+1.82*input$LP+0.41*input$HSNFK-0.01*input$IMMLZH-0.24*input$SRB+0.35*input$GL+0.003*input$GAL+0.06*input$FV-0.02*input$SAD+2.48*input$GZ+1.72*input$TZ))*100)
         #epg - вероятность повторной госпитализации
@@ -27,7 +26,7 @@ shinyServer(
         keya <- reactive((exp(3.09-0.44*input$OK-2.13*input$HOBL-0.03*input$DAD+0.56*ACTR))/(1+exp(3.09-0.44*input$OK-2.13*input$HOBL-0.03*input$DAD+0.56*ACTR))*100) 
         #ehsn - вероятность ХСН в течение года
         ehsn <- reactive((exp(-13.04+1.35*input$LP-1.18*ACTR-0.004*input$MK-1.15*input$KDR+0.07*input$CHSS))/(1+exp(-13.04+1.35*input$LP-1.18*ACTR-0.004*input$MK-1.15*input$KDR+0.07*input$CHSS))*100)
-        #Без ЭИТ  
+        #Без ЭИТ
         #bfp - вероятность рецидива ФП
         bfp <- reactive((exp(26.22+3.24*input$HSNFK-2.01*input$KDR-0.14*input$FV-1.25*input$GL+0.01*input$GAL-0.89*input$SRB))/(exp(26.22+3.24*input$HSNFK-2.01*input$KDR-0.14*input$FV-1.25*input$GL+0.01*input$GAL-0.89*input$SRB)+1)*100)
         #bpg - вероятность повторной госпитализации 
@@ -36,6 +35,8 @@ shinyServer(
         bke <- reactive((exp(9.06-0.15*input$CHSS-1.31*input$GL+3.12*input$LPV+0.03*input$SKF))/(1+exp(9.06-0.15*input$CHSS-1.31*input$GL+3.12*input$LPV+0.03*input$SKF))*100)
         #bnsn - вероятность ХСН в течение года 
         bhsn <- reactive((exp(35.56-0.15*input$SAD-0.17*input$CHSS+0.03*input$NUP))/(exp(35.56-0.15*input$SAD-0.17*input$CHSS+0.03*input$NUP)+1)*100)
+        
+        
         
         l1 <- reactive(sprintf('<font color="%s">%s</font>','green', ' < 1 %'))
         h99 <- reactive(sprintf('<font color="%s">%s</font>', 'green', ' > 99 %'))
@@ -50,6 +51,7 @@ shinyServer(
         bpgpf <- reactive(sprintf('<font color="%s">%s  %s</font>','green', round(bpg(), 2), '%'))
         bkef <- reactive(sprintf('<font color="%s">%s  %s</font>','green', round(bke(), 2), '%'))
         bhsnf <- reactive(sprintf('<font color="%s">%s  %s</font>','green', round(bhsn(), 2), '%'))
+       
         efpfr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(efp(), 2), '%'))
         epgfr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(epg(), 2), '%'))
         keyafr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(keya(), 2), '%'))
@@ -61,18 +63,102 @@ shinyServer(
         
         
         
-        observeEvent(input$add, {
+        observeEvent(input$CreateCategory, {
             insertUI(
-                selector = "#add",
+                selector = "#CreateCategory",
                 where = "afterEnd",
-                ui = textInput(paste0("txt", input$add),
-                               "Insert some text")
+                ui =  fluidPage(
+                    fluidPage(br(),
+                    textInput("category", "Категория:", placeholder="введите название")),
+                    fluidPage(   
+                        #h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
+                        checkboxGroupInput("Predictors","Выберите предикторы",
+                                           c("ОХ"="1",
+                                             "ЛПНП"="2",
+                                             "ТГ"="3",
+                                             "ЛПВП"="4",
+                                             "Глюкоза"="5",
+                                             "Калий"="6",
+                                             "Мочевина"="7",
+                                             "Креатинин"="8",
+                                             "СКФ"="9",
+                                             "СРБ"="10",
+                                             "Фибриноген"="11",
+                                             "МК"="12",
+                                             "NTproBNP"="13",
+                                             "Галлектин-3"="14",
+                                             "ХСНС"="15",
+                                             "ХСНФК"="16",
+                                             "Терапия"="17",
+                                             "ИММЛЖ"="18",
+                                             "САД"="19",
+                                             "ДАД"="20",
+                                             "ЧСС"="21",
+                                             "ЛП"="22",
+                                             "КДР"="23",
+                                             "ФВ"="24",
+                                             "Длительность АГ"="25",
+                                             "Рецидив ФП"="26")
+                                           )),
+                        fluidPage(
+                            actionButton("Add", "Создать"),br(),br())))
+        })
+        
+        observeEvent(input$Add, {   
+            K1=paste(input$Predictors,collapse = ",")  
+            N1=paste(input$category)
+            removeUI(
+                ui =  fluidPage(
+                    fluidPage(br(),
+                              textInput("category", "Категория:", placeholder="введите название")),
+                    fluidPage(   
+                checkboxGroupInput("Predictors","Выберите предикторы",
+                                   c("ОХ"="1",
+                                     "ЛПНП"="2",
+                                     "ТГ"="3",
+                                     "ЛПВП"="4",
+                                     "Глюкоза"="5",
+                                     "Калий"="6",
+                                     "Мочевина"="7",
+                                     "Креатинин"="8",
+                                     "СКФ"="9",
+                                     "СРБ"="10",
+                                     "Фибриноген"="11",
+                                     "МК"="12",
+                                     "NTproBNP"="13",
+                                     "Галлектин-3"="14",
+                                     "ХСНС"="15",
+                                     "ХСНФК"="16",
+                                     "Терапия"="17",
+                                     "ИММЛЖ"="18",
+                                     "САД"="19",
+                                     "ДАД"="20",
+                                     "ЧСС"="21",
+                                     "ЛП"="22",
+                                     "КДР"="23",
+                                     "ФВ"="24",
+                                     "Длительность АГ"="25",
+                                     "Рецидив ФП"="26")
+                )),
+            fluidPage(
+                actionButton("Add", "Создать"),br(),br()))
+                
+                
             )
+            insertUI(
+                selector = "#Add",
+                where = "afterEnd",
+                ui =  fluidPage(
+                    fluidPage(br(),
+                              h4(paste(N1),": ",paste(K1))
+                    )  
+                
+                
+            ))
         })
         
         
-        
-        
+        #EXAMPLE
         output$EFP <- renderText({
             if(efp() < bfp()){
                 if (efp()<1) { paste(l1())}  
@@ -84,41 +170,9 @@ shinyServer(
                 else { paste(efpfr()) }
             }
         })
-        output$EPZ <- renderText({
-            if(epg() < bpg()){
-                if (epg()<1) { paste(l1())}  
-                else if(epg()>99){paste(h99())} 
-                else {paste(epgf())}
-            } else {
-                if (epg()<1) {paste(l1r())}  
-                else if(epg()>99){paste(h99r())} 
-                else {paste(epgfr())}
-            }
-        })
+      
         
-        output$EKEYA <- renderText({if(keya() < bke()){
-                if (keya()<1) {paste(l1())}  
-            else if(keya()>99){paste(h99())} 
-            else {paste(keyaf())}
-            } else {
-                if (keya()<1) {paste(l1r())}  
-                else if(keya()>99){paste(h99r())} 
-                else {paste(keyafr())}
-            }   
-        })
         
-        output$EHSN <- renderText({
-            if(ehsn() < bhsn()){
-                if (ehsn()<1) {paste(l1())}  
-                else if(ehsn()>99){paste(h99())} 
-                else {paste(ehsnf())}
-            } else {
-                if (ehsn()<1) {paste(l1r())}  
-                else if(ehsn()>99){paste(h99r()) }
-                else {paste(ehsnfr())}
-            }
-            
-        })
         
         
         
