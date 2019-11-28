@@ -19,6 +19,7 @@ shinyUI(
                  h1("Калькулятор"), tags$style("h1{text-align:center;}"),
                  absolutePanel(top=NULL,left=NULL, where="beforeBegin",
                               actionButton("CreateCategory", "Создать категорию"))),
+                actionButton("FinishRegression", "Завершить регрессию"),
                 
         
         tabPanel("Помощь",h4("не дождетесь, в России же живете")), 

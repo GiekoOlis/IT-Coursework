@@ -64,12 +64,11 @@ shinyServer(
         
         
         observeEvent(input$CreateCategory, {
-            insertUI(
-                selector = "#CreateCategory",
-                where = "afterEnd",
-                ui =  fluidPage(
-                    fluidPage(br(),
-                    textInput("category", "Категория:", placeholder="введите название")),
+           # insertUI(
+                #selector = "#CreateCategory",
+                #where = "afterEnd",
+                showModal(modalDialog(
+                    textInput("category", "Категория:", placeholder="введите название"),
                     fluidPage(   
                         #h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
                         checkboxGroupInput("Predictors","Выберите предикторы",
@@ -100,53 +99,17 @@ shinyServer(
                                              "Длительность АГ"="25",
                                              "Рецидив ФП"="26")
                                            )),
-                        fluidPage(
-                            actionButton("Add", "Создать"),br(),br())))
+                       footer= tagList(
+                       modalButton ("Отмена"),
+                       actionButton("Add", "Создать")),easyClose = TRUE))
         })
         
-        observeEvent(input$Add, {   
+        observeEvent(input$Add, { 
             K1=paste(input$Predictors,collapse = ",")  
-            N1=paste(input$category)
-            removeUI(
-                ui =  fluidPage(
-                    fluidPage(br(),
-                              textInput("category", "Категория:", placeholder="введите название")),
-                    fluidPage(   
-                checkboxGroupInput("Predictors","Выберите предикторы",
-                                   c("ОХ"="1",
-                                     "ЛПНП"="2",
-                                     "ТГ"="3",
-                                     "ЛПВП"="4",
-                                     "Глюкоза"="5",
-                                     "Калий"="6",
-                                     "Мочевина"="7",
-                                     "Креатинин"="8",
-                                     "СКФ"="9",
-                                     "СРБ"="10",
-                                     "Фибриноген"="11",
-                                     "МК"="12",
-                                     "NTproBNP"="13",
-                                     "Галлектин-3"="14",
-                                     "ХСНС"="15",
-                                     "ХСНФК"="16",
-                                     "Терапия"="17",
-                                     "ИММЛЖ"="18",
-                                     "САД"="19",
-                                     "ДАД"="20",
-                                     "ЧСС"="21",
-                                     "ЛП"="22",
-                                     "КДР"="23",
-                                     "ФВ"="24",
-                                     "Длительность АГ"="25",
-                                     "Рецидив ФП"="26")
-                )),
-            fluidPage(
-                actionButton("Add", "Создать"),br(),br()))
-                
-                
-            )
+            N1=paste(input$category)  
+            removeModal()
             insertUI(
-                selector = "#Add",
+                selector = "#CreateCategory",
                 where = "afterEnd",
                 ui =  fluidPage(
                     fluidPage(br(),
