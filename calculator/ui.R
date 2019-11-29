@@ -1,7 +1,6 @@
 library(shiny)
 library(shinythemes)
 library(shinyjs)
-library (shinydashboard)
 
 shinyUI(
     fluidPage(
@@ -16,10 +15,11 @@ shinyUI(
         
         tabPanel("Калькулятор",
                  style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
-                 h1("Калькулятор"), tags$style("h1{text-align:center;}"),
+                 h1("Калькулятор"),tags$style("h1{text-align:center;}"),
                  absolutePanel(top=NULL,left=NULL, where="beforeBegin",
-                              actionButton("CreateCategory", "Создать категорию"))),
-                actionButton("FinishRegression", "Завершить регрессию"),
+                            actionButton("CreateCategory", "Создать категорию"), 
+                            actionButton("FinishRegression", "Завершить регрессию"))),
+               
                 
         
         tabPanel("Помощь",h4("не дождетесь, в России же живете")), 
@@ -51,7 +51,9 @@ shinyUI(
                    
                    
                    
-                   
+                                    
+                                    #complication{text-align:center;background-color:#363636; color: #FFFFFF;} 
+                                    #complication:focus{ text-align:center;border: solid #df691a;}
                                     #category{text-align:center;background-color:#363636; color: #FFFFFF;} 
                                     #category:focus{ text-align:center;border: solid #df691a;} 
                                     #surname{text-align:center;background-color:#363636; color: #FFFFFF;} 

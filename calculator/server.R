@@ -62,11 +62,8 @@ shinyServer(
         bhsnfr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(bhsn(), 2), '%'))
         
         
-        
+##########################################################################################################
         observeEvent(input$CreateCategory, {
-           # insertUI(
-                #selector = "#CreateCategory",
-                #where = "afterEnd",
                 showModal(modalDialog(
                     textInput("category", "Категория:", placeholder="введите название"),
                     fluidPage(   
@@ -103,24 +100,75 @@ shinyServer(
                        modalButton ("Отмена"),
                        actionButton("Add", "Создать")),easyClose = TRUE))
         })
-        
+##########################################################################################################
         observeEvent(input$Add, { 
+            N1=paste(input$category)
             K1=paste(input$Predictors,collapse = ",")  
-            N1=paste(input$category)  
             removeModal()
             insertUI(
                 selector = "#CreateCategory",
                 where = "afterEnd",
-                ui =  fluidPage(
-                    fluidPage(br(),
-                              h4(paste(N1),": ",paste(K1))
-                    )  
-                
-                
-            ))
+                ui =  fluidPage(br(),
+                                h4(paste(N1),": ",paste(K1))
+                )  )
+        })
+##########################################################################################################
+        observeEvent(input$FinishRegression, { 
+          removeModal()
+          removeUI(
+            selector = "#CreateCategory"
+          )
+           insertUI(
+            selector = "#FinishRegression",
+            where = "beforeBegin",
+            ui =  actionButton("CreateComplication", "Создать осложнение")
+            )
+          removeUI(
+            selector = "#FinishRegression",
+            h4
+          )
+         
+        })
+##########################################################################################################
+        observeEvent(input$CreateComplication, {
+          showModal(modalDialog(
+            textInput("complication", "Осложнение:", placeholder="введите название"),
+            fluidPage(   
+              h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
+              checkboxGroupInput("Predictors","Выберите предикторы",
+                                 c("ОХ"="1",
+                                   "ЛПНП"="2",
+                                   "ТГ"="3",
+                                   "ЛПВП"="4",
+                                   "Глюкоза"="5",
+                                   "Калий"="6",
+                                   "Мочевина"="7",
+                                   "Креатинин"="8",
+                                   "СКФ"="9",
+                                   "СРБ"="10",
+                                   "Фибриноген"="11",
+                                   "МК"="12",
+                                   "NTproBNP"="13",
+                                   "Галлектин-3"="14",
+                                   "ХСНС"="15",
+                                   "ХСНФК"="16",
+                                   "Терапия"="17",
+                                   "ИММЛЖ"="18",
+                                   "САД"="19",
+                                   "ДАД"="20",
+                                   "ЧСС"="21",
+                                   "ЛП"="22",
+                                   "КДР"="23",
+                                   "ФВ"="24",
+                                   "Длительность АГ"="25",
+                                   "Рецидив ФП"="26")
+              )),
+            footer= tagList(
+              modalButton ("Отмена"),
+              actionButton("Add1", "Создать")),easyClose = TRUE))
         })
         
-        
+##########################################################################################################        
         #EXAMPLE
         output$EFP <- renderText({
             if(efp() < bfp()){
