@@ -9,16 +9,18 @@ shinyUI(
         theme = shinytheme("superhero"), 
     navlistPanel(id ="menu", "Прогноз",well = FALSE, widths = c(3,9),
                  
-        tabPanel("Файл",h4("Подключите таблицу с данными о пациентах"),column(12, 
-            fileInput("file", h3(""),placeholder="выберите файл")),
-            tags$style("#file{text-align:center; ")),
+                 tabPanel("Файл",h4("Подключите таблицу с данными о пациентах"),column(12, 
+                          fileInput("file", h3(""),placeholder="выберите файл",accept = c(".csv", "text/csv", 
+                                             "txt/comma-separated-values,text/plain")), 
+                          uiOutput('main_grid')),
+                          tags$style("#file{text-align:center; ")),
         
-        tabPanel("Калькулятор",
+        tabPanel("Калькулятор", value="Kalc",
                  style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
                  h1("Калькулятор"),tags$style("h1{text-align:center;}"),
                  absolutePanel(top=NULL,left=NULL, where="beforeBegin",
-                            actionButton("CreateCategory", "Создать категорию"), 
-                            actionButton("FinishRegression", "Завершить регрессию"))),
+                            actionButton("FinishRegression", "Завершить регрессию"),
+                            actionButton("CreateCategory", "Создать категорию") )),
                
                 
         

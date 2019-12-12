@@ -1,11 +1,3 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
 library(shiny)
 library(shinyjs)
@@ -14,8 +6,29 @@ library(shinyjs)
 # Define server logic required to draw a histogram
 shinyServer(
     function(input, output, session){
-        
-        #data = read.table(file = input$file, header = true, sep = ";",dec = ",",nrows=100)
+      options (shiny.maxRequestSize = 30*1024^5) 
+      data = reactive ({ 
+        File = input$file 
+        if(is.null(File)){return()} 
+        else {read.csv2(header=TRUE,na.strings = c("NA",""," "),File$datapath)} 
+      } 
+      ) 
+      output$raw_data = renderDataTable({data()}) 
+      output$main_grid = renderUI({ 
+        if (is.null(data())) 
+        { 
+          p("Для того, чтобы воспользоваться калькулятором, добавьте файл с тбалицей") 
+        } 
+        else { 
+          tabsetPanel(tabPanel("RawData", dataTableOutput('raw_data'))) 
+        }} 
+      )  
+      
+      
+      
+      
+      
+      
         
         ACTR=0.5
         #efp - вероятность рецидива ФП 
@@ -62,12 +75,44 @@ shinyServer(
         bhsnfr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(bhsn(), 2), '%'))
         
         
+        
+        
+        
+        
+##########################################################################################################        
+        #читаем строку названий столбцов из файла
+        #создаем для каждого названия чекбокс, название - имя предиктора, id - можно цифру
+        #создаем массив списков, хранящих название категории и предикторы к ней относящиеся, по обращениям к элементам
+        #будем выводить эти категории в интерфейс через массив(но при выводе
+        #будем выводить не id чекбокса, а его метку label)
+        
+        #при создании категории создаем list в который помещаем название категории, вектор выбранных чекбоксов
+        #создаем массив списков который будет хранить осложнения и формулы и все такое прочее
+      
+        #при создании осложнения создаем list  в который помещаем название осложнения, вектор значений(выбранных чекбоксов)
+        #которые будут учитывтаься при подсчете этого осложнения
+        #далее Влада пополняет этот список формулой и ее переменными
+        #
+        #
+        #
+        
+        
+        
+        
+        
+        
+        
 ##########################################################################################################
         observeEvent(input$CreateCategory, {
                 showModal(modalDialog(
                     textInput("category", "Категория:", placeholder="введите название"),
                     fluidPage(   
                         #h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
+                        #checkboxInput("", label = "ЛП", value = FALSE),
+                      
+                      
+                      
+                      
                         checkboxGroupInput("Predictors","Выберите предикторы",
                                            c("ОХ"="1",
                                              "ЛПНП"="2",
@@ -104,6 +149,8 @@ shinyServer(
         observeEvent(input$Add, { 
             N1=paste(input$category)
             K1=paste(input$Predictors,collapse = ",")  
+           # els = document.getElementsByName("Kalc")
+            #names = names(data)
             removeModal()
             insertUI(
                 selector = "#CreateCategory",
@@ -115,6 +162,9 @@ shinyServer(
 ##########################################################################################################
         observeEvent(input$FinishRegression, { 
           removeModal()
+          #getelementbyid().removeChild(getelementbyid())
+          
+          
           removeUI(
             selector = "#CreateCategory"
           )
