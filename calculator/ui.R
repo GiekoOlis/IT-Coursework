@@ -1,6 +1,8 @@
 library(shiny)
 library(shinythemes)
 library(shinyjs)
+#library(DT)
+library(ggplot2)
 
 shinyUI(
     fluidPage(
