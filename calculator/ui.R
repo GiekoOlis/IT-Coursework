@@ -6,7 +6,7 @@ library(ggplot2)
 
 shinyUI(
     fluidPage(
-        
+        useShinyjs(),
         #theme = "trtr.css",
         theme = shinytheme("superhero"), 
     navlistPanel(id ="menu", "Прогноз",well = FALSE, widths = c(3,9),
