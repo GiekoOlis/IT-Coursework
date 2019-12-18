@@ -17,13 +17,20 @@ shinyUI(
                           uiOutput('main_grid')),
                           tags$style("#file{text-align:center; ")),
         
-        tabPanel("Калькулятор", value="Kalc",
+        tabPanel("Админка", value="Kalc",
+                 style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
+                tabsetPanel( tabPanel(
+                        h4("Категории"),tags$style("h1{text-align:center;}"),
+                        absolutePanel(top=NULL,left=NULL, where="beforeBegin",
+                            actionButton("CreateCategory", "Создать категорию") )),
+                 tabPanel(
+                        h4("Осложнения"),tags$style("h1{text-align:center;}"),
+                        absolutePanel(top=NULL,left=NULL, where="beforeBegin",
+                          actionButton("CreateComplication", "Создать осложнение"))))),
+        tabPanel("Челядь", value="TRTR",
                  style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
                  h1("Калькулятор"),tags$style("h1{text-align:center;}"),
-                 absolutePanel(top=NULL,left=NULL, where="beforeBegin",
-                            actionButton("FinishRegression", "Завершить регрессию"),
-                            actionButton("CreateCategory", "Создать категорию") )),
-               
+                 ),      
                 
         
         tabPanel("Помощь",h4("не дождетесь, в России же живете")), 

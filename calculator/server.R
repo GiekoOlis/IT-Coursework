@@ -1,5 +1,5 @@
- #читаем строку названий столбцов из файла
-        #создаем для каждого названия чекбокс, название - имя предиктора, id - можно цифру
+       # #читаем строку названий столбцов из файла
+       # #создаем для каждого названия чекбокс, название - имя предиктора, id - можно цифру
         #создаем массив списков, хранящих название категории и предикторы к ней относящиеся, по обращениям к элементам
         #будем выводить эти категории в интерфейс через массив(но при выводе
         #будем выводить не id чекбокса, а его метку label)
@@ -30,9 +30,19 @@ shinyServer(
         return(datap)
       }})
 ##########################################################################################################
-      S=reactive({input$Predictors})
-      vsp = reactive({names(data())})
-      #data.header =reactive({vsp()[-S()]})
+      #observe({
+      #S=reactive({input$Predictors})
+      #vsp = reactiveValues()
+      #vsp$k=names(data())
+      #vsp$k= vsp$k[,-S()]
+      #data.header = vsp$k
+      #return(data.heared)
+      #})
+      
+      #data.header =reactive({vsp$k = vsp()[,-S()]})
+      #S=reactiveValues({input$Predictors})
+      #vsp = reactiveValues({names(data())})
+      #data.header =reactive({vsp = vsp[,-S()]})
 ##########################################################################################################
       data.header = reactive({names(data())})
 ########################################################################################################## 
@@ -40,10 +50,9 @@ shinyServer(
       #outputOptions(output, "data.header", suspendWhenHidden = FALSE)
 
 ##########################################################################################################      
-      output$raw_data = renderDataTable({data()}) 
-      output$main_grid = renderUI({ 
-        if (is.null(data())){ p("Для того, чтобы воспользоваться калькулятором, добавьте файл с тбалицей")} 
-        else {  tabsetPanel(tabPanel("Data",dataTableOutput('raw_data')))}})  
+      #output$raw_data = renderDataTable({data()}) 
+      #output$main_grid = renderUI({ 
+      #if (is.null(data())){ p("Для того, чтобы воспользоваться калькулятором, добавьте файл с тбалицей")} 
 ##########################################################################################################  
         observeEvent(input$CreateCategory, {
                 showModal(modalDialog(
@@ -61,42 +70,28 @@ shinyServer(
             data.header =reactive({names(data())})
             N1=paste(input$category)
             K1=paste(input$Predictors,collapse = ",    ")
-            TT=paste(data.header(),collapse = ",    ")
-            PP=paste(vsp(),collapse = ",    ")
-            KK=paste(S(),collapse = ",    ")
+           
             removeModal()
             insertUI(
                 selector = "#CreateCategory",
                 where = "afterEnd",
                 ui =  fluidPage(br(),
-                                h4(paste(N1),":   ",paste(K1),":   ",br(),paste(TT),":   ",br(),paste(PP),":   ",br(),paste(KK))
+                                h4(paste(N1),":   ",paste(K1))
                 )  )
         })
 ##########################################################################################################
         observeEvent(input$FinishRegression, { 
           removeModal()
-          #getelementbyid().removeChild(getelementbyid())
-          HTML(sprintf(
-            "<script>
-            var node = document.getElementById('CreateCategory');
-            var element = document.node.parentNode;
-            while (element.firstChild) {
-            element.removeChild(element.firstChild)
-            </script>"))
-          
-          
-          #removeUI(
-          #  selector = "#CreateCategory"
-          #)
            insertUI(
-            selector = "#FinishRegression",
-            where = "beforeBegin",
-            ui =  actionButton("CreateComplication", "Создать осложнение")
+            selector = "#Kalc",
+            where = "beforeEnd",
+            ui =  tabPanel( where="beforeEnd",
+              h4("Осложнения"),tags$style("h1{text-align:center;}"),
+              absolutePanel(top=NULL,left=NULL, where="beforeBegin",
+                            actionButton("CreateComplication", "Создать осложнение"),
+                            actionButton("CreateComSZfdxg", "Создать осложнение")))
             )
-          #removeUI(
-          #  selector = "#FinishRegression"
-          #)
-         
+          
         })
 ##########################################################################################################
         observeEvent(input$CreateComplication, {
@@ -104,21 +99,19 @@ shinyServer(
             textInput("complication", "Осложнение:", placeholder="введите название"),
             fluidPage(   
               h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
-              checkboxGroupInput("Predictors","Выберите предикторы",
-                                 data.header())
-            )),
+              checkboxGroupInput("Param","Выберите предикторы", data.header())
+            ),
             footer= tagList(
               modalButton ("Отмена"),
-              actionButton("Add1", "Создать"),easyClose = TRUE))
+              actionButton("Add1", "Создать")),easyClose = TRUE))
         })
 ##########################################################################################################   
       observeEvent(input$Add1, { 
-        data.header =reactive({names(data())})
         N2=paste(input$category)
-        K2=paste(input$Predictors,collapse = ",    ")
+        K2=paste(input$Param,collapse = ",    ")
         removeModal()
         insertUI(
-          selector = "#CreateCategory",
+          selector = "#CreateComplication",
           where = "afterEnd",
           ui =  fluidPage(br(),
                           h4(paste(N2),":   ",paste(K2))
