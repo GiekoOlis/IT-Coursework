@@ -30,7 +30,15 @@ shinyUI(
         tabPanel("Челядь", value="TRTR",
                  style = "max-height: 700px; overflow: hidden; overflow-y: auto;}",
                  h1("Калькулятор"),tags$style("h1{text-align:center;}"),
-                 ),      
+                 fluidPage( h3("Пациент"),
+                            column(4,textInput("surname", "Фамилия", placeholder="введите фамилию"), 
+                                   numericInput("age", "Возраст:", min = 18, max = 105, value = 40, step = 1, width = 300),),
+                            column(4, textInput("name", "Имя", placeholder="введите имя")),
+                            column(4, textInput("fname", "Отчество", placeholder="введите отчество")),
+                            radioButtons("gender","Пол:", c("Мужской","Женский")),
+                 tabPanel(h4("Калькулятор"),tags$style("h1{text-align:center;}"))
+                          #actionButton("Begin", "Начать заполнение")
+                 )),      
                 
         
         tabPanel("Помощь",h4("не дождетесь, в России же живете")), 
@@ -73,34 +81,34 @@ shinyUI(
                                     #name:focus{ text-align:center;border: solid #df691a;} 
                                     #fname{text-align:center;background-color:#363636; color: #FFFFFF;} 
                                     #fname:focus{ text-align:center;border: solid #df691a;}
-                                    #age{text-align:center;background-color:#363636; color: #FFFFFF;} 
-                                    #age:focus{ text-align:center;border: solid #df691a;}
-                                    #LP{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #LP:focus{text-align:center;border: solid #df691a;}
-                                    #IMMLZH{text-align:center;background-color:#363636; color: #FFFFFF}
-                                    #IMMLZH:focus{text-align:center; border: solid #df691a;}
-                                    #KDR{text-align:center;background-color:#363636; color: #FFFFFF}
-                                    #KDR:focus{text-align:center; border: solid #df691a;}
-                                    #FV{text-align:center;background-color:#363636; color: #FFFFFF}
-                                    #FV:focus{text-align:center;border: solid #df691a;}
-                                    #OK{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #OK:focus{text-align:center;border: solid #df691a;}
-                                    #LPV{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #LPV:focus{text-align:center;border: solid #df691a;}
-                                    #GL{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #GL:focus{text-align:center;border: solid #df691a;}
-                                    #GAL{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #GAL:focus{text-align:center;border: solid #df691a;}
-                                    #NUP{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #NUP:focus{text-align:center;border: solid #df691a;}
-                                    #SRB{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #SRB:focus{text-align:center;border: solid #df691a;}
-                                    #MK{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #MK:focus{text-align:center;border: solid #df691a;}
-                                    #SKF{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #SKF:focus{text-align:center;border: solid #df691a;}
-                                    #SAD{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #SAD:focus{text-align:center;border: solid #df691a;}
+                                    #Возраст{text-align:center;background-color:#363636; color: #FFFFFF;} 
+                                    #Возраст:focus{ text-align:center;border: solid #df691a;}
+                                    #ОХ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ОХ:focus{text-align:center;border: solid #df691a;}
+                                    #ЛПНП{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #ЛПНП:focus{text-align:center; border: solid #df691a;}
+                                    #КДР{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #КДР:focus{text-align:center; border: solid #df691a;}
+                                    #ФВ{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #ФВ:focus{text-align:center;border: solid #df691a;}
+                                    #ДАД{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ДАД:focus{text-align:center;border: solid #df691a;}
+                                    #САД{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #САД:focus{text-align:center;border: solid #df691a;}
+                                    #ЧСС{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЧСС:focus{text-align:center;border: solid #df691a;}
+                                    #ИММЛЖ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ИММЛЖ:focus{text-align:center;border: solid #df691a;}
+                                    #ТГ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ТГ:focus{text-align:center;border: solid #df691a;}
+                                    #ЛПВП{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЛПВП:focus{text-align:center;border: solid #df691a;}
+                                    #ЛП{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЛП:focus{text-align:center;border: solid #df691a;}
+                                    #СКФ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #СКФ:focus{text-align:center;border: solid #df691a;}
+                                    #СРБ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #СРБ:focus{text-align:center;border: solid #df691a;}
                                     #DAD{text-align:center;background-color:#363636; color: #FFFFFF} 
                                     #DAD:focus{text-align:center;border: solid #df691a;}
                                     #CHSS{text-align:center;background-color:#363636; color: #FFFFFF} 

@@ -45,9 +45,9 @@ shinyServer(
       #data.header =reactive({vsp = vsp[,-S()]})
 ##########################################################################################################
       data.header = reactive({names(data())})
+      #outputOptions(output, "data.header", suspendWhenHidden = FALSE)
 ########################################################################################################## 
       
-      #outputOptions(output, "data.header", suspendWhenHidden = FALSE)
 
 ##########################################################################################################      
       #output$raw_data = renderDataTable({data()}) 
@@ -70,7 +70,8 @@ shinyServer(
             data.header =reactive({names(data())})
             N1=paste(input$category)
             K1=paste(input$Predictors,collapse = ",    ")
-           
+            Pr=input$Predictors
+            P=length(input$Predictors)
             removeModal()
             insertUI(
                 selector = "#CreateCategory",
@@ -78,6 +79,20 @@ shinyServer(
                 ui =  fluidPage(br(),
                                 h4(paste(N1),":   ",paste(K1))
                 )  )
+            
+            for(i in 1:P){
+              insertUI(
+                selector = "#gender",
+                where = "afterEnd",
+                ui =  fluidPage(
+                          numericInput(inputId = Pr[i],label=Pr[i], min = 0, max = 10, value = 4.6, step = 0.5, width = 300),
+                    )
+                )}
+            insertUI(
+              selector = "#gender",
+              where = "afterEnd",
+              ui =   
+                tabPanel(N1,h3(paste(N1)),tags$style("h1{text-align:center;}")))
         })
 ##########################################################################################################
         observeEvent(input$FinishRegression, { 
@@ -94,9 +109,25 @@ shinyServer(
           
         })
 ##########################################################################################################
-        observeEvent(input$CreateComplication, {
+      #observe({
+      #  Y=matrix(nrow = 1, ncol = 10)  
+      #  i=1
+      #})
+      #Y=reactive({
+      #  matrix(nrow = 1, ncol = 10)
+      #})
+      observeEvent(input$CreateComplication, {
           showModal(modalDialog(
-            textInput("complication", "Осложнение:", placeholder="введите название"),
+            fluidPage(   
+              h4("Выберите осложнение"), tags$style("h4{text-align:center;}"),
+              checkboxGroupInput("Complication","Выберите Осложнение", data.header())
+            ),
+            footer= tagList(
+              modalButton ("Отмена"),
+              actionButton("Add1", "Выбрать")),easyClose = TRUE))
+          #Y[i]=input$Complication
+          showModal(modalDialog(
+            textInput("Arguments", "Предикторы:", placeholder="введите название"),
             fluidPage(   
               h4("Выберите параметры"), tags$style("h4{text-align:center;}"),
               checkboxGroupInput("Param","Выберите предикторы", data.header())
@@ -104,8 +135,28 @@ shinyServer(
             footer= tagList(
               modalButton ("Отмена"),
               actionButton("Add1", "Создать")),easyClose = TRUE))
+          #i=i+1
         })
-##########################################################################################################   
+########################################################################################################## 
+      createArray <- reactive({
+        X<-array(0,dim=c(500,input$nsim))
+        X[1,]<-rep(input$p,input$nsim)
+        
+        for(j in 1:N.sim){
+          for(i in 2:N.gen){
+            p.i = rbinom(1,N.chrom,prob=1-X[i-1,j])/N.chrom
+            meanfit <-p.i^2*w.aa+2*p.i*(1-p.i)*w.ab+(1-p.i)^2*w.bb
+            X[i,j] =1-(p.i^2*w.aa/meanfit+p.i*(1-p.i)*w.ab/meanfit)
+          }  
+        }
+        X 
+      })
+      
+      output$plot <- renderPlot({
+        ourArray<-createArray() 
+        plot(ourArray) #plot the results of the simulations (loops).
+      })    
+########################################################################################################## 
       observeEvent(input$Add1, { 
         N2=paste(input$category)
         K2=paste(input$Param,collapse = ",    ")
