@@ -13,7 +13,7 @@ library(shiny)
 library(shinyjs)
 library(DT)
 library(data.table)
-#library(tidyverse)
+
 Compls = list()
 Compls[[1]]=vector()    #Столбец осложнения
 Compls[[2]]=vector()    #Вектор предикторов
@@ -26,8 +26,8 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
         File = input$file 
         if(is.null(File)){return()} 
         else {datat=read.csv2(na.strings = c("NA",""," "),File$datapath)
-        datap=as.data.frame(datat)
-        return(datap)
+        #datap=as.data.frame(datat)
+        return(datat)
       }})
 ##########################################################################################################
       #observe({
@@ -52,7 +52,7 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
 ##########################################################################################################      
       #output$raw_data = renderDataTable({data()}) 
       #output$main_grid = renderUI({ 
-      #if (is.null(data())){ p("Для того, чтобы воспользоваться калькулятором, добавьте файл с тбалицей")} 
+      #if (is.null(data())){ p("Для того, чтобы воспользоваться калькулятором, добавьте файл с таблицей")} 
 ##########################################################################################################  
         observeEvent(input$CreateCategory, {
                 showModal(modalDialog(
@@ -113,7 +113,7 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
           showModal(modalDialog(
             fluidPage(   
               h4("Выберите осложнение"), tags$style("h4{text-align:center;}"),
-              checkboxGroupInput("Complication","Выберите Осложнение", data.header())
+              radioButtons("Complication","Выберите Осложнение", data.header())
             ),
             footer= tagList(
               modalButton ("Отмена"),
@@ -137,17 +137,62 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
             actionButton("Add2", "Создать")),easyClose = TRUE))
       })
 ########################################################################################################## 
+        TL=reactive({input$Complication})
+        KL=reactive({input$Param})
+        RR=reactive({l=paste(KL(),collapse ="+")
+          return(l)})
+        f=reactive({K=as.formula(paste(TL(), "~",RR()))
+          return(K)})
+        m=reactive({t=glm(f(),data=data(),family = binomial)
+        p=as.matrix(t$coefficients)
+        return(p)})
+##########################################################################################################
+        form=reactive({
+          fr=as.formula(IOP())
+          result=(exp(fr))/(1+exp(fr))*100
+          return(result)
+          })
+        
+       # PFP <- function(KL{
+          #KT=input$Param
+        #  P=length(KL)
+        #  for(i in 1:P){
+        #    J=KL[i+1]#*m$coefficient[i]*
+        #    H=H+J
+         # }
+         # return(H+KL[1])
+        #}
+      #qwer=reactive({
+       # p=predict(m(),KL)
+      #  return(p)
+      #})
+########################################################################################################## 
+      IOP=reactive({
+        TR=m()
+        KT=input$Param
+        P=length(KT)
+        Formula=paste(input$Complication,"~",TR[1],"+")
+        for(i in 1:P){
+          if(i==P){
+            Formula=paste(Formula,TR[i+1],"*",KT[i]) }
+          else{
+          Formula=paste(Formula,TR[i+1],"*",KT[i],"+")}
+        }
+        return(Formula)
+      })
+      
       observeEvent(input$Add2, { 
         N2=paste(input$Complication)
         K2=paste(input$Param,collapse = ",    ")
+        PT=Reduce( paste, deparse(m()) )
         removeModal()
+        
         insertUI(
           selector = "#CreateComplication",
           where = "afterEnd",
           ui =  fluidPage(br(),
-                          h4(paste(N2),": ",paste(K2))
-          )  )
-      })
+                          h4(paste(form()))))
+        })
 ##########################################################################################################  
       createArray <- reactive({
         X<-array(0,dim=c(500,input$nsim))

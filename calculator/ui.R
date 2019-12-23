@@ -108,10 +108,9 @@ shinyUI(
                                     #СКФ:focus{text-align:center;border: solid #df691a;}
                                     #СРБ{text-align:center;background-color:#363636; color: #FFFFFF} 
                                     #СРБ:focus{text-align:center;border: solid #df691a;}
-                                    #DAD{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #DAD:focus{text-align:center;border: solid #df691a;}
-                                    #CHSS{text-align:center;background-color:#363636; color: #FFFFFF} 
-                                    #CHSS:focus{text-align:center;border: solid #df691a;}
+                                    
+                                    
+                                    
                 "),
         mainPanel()
     )
