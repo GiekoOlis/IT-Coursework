@@ -146,12 +146,28 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
         m=reactive({t=glm(f(),data=data(),family = binomial)
         p=as.matrix(t$coefficients)
         return(p)})
+        mm=reactive({t=glm(f(),data=data(),family = binomial)
+        return(t)})
+        data2=reactive({dataq=data()
+        dataq=dataq[FALSE, ]
+        KT=input$Param
+        P=length(KT)
+        tyu=dataq
+        tyu[1,]=0
+        for(i in 1:P){
+        tyu$KT[i]=input$KT[i]
+        }
+        
+        p=predict(mm(),type="response", tyu[1, ])
+        return(p)
+        })
+        
 ##########################################################################################################
-        form=reactive({
-          fr=as.formula(IOP())
-          result=(exp(fr))/(1+exp(fr))*100
-          return(result)
-          })
+        #form=reactive({
+        #  fr=as.formula(IOP())
+        #  result=(exp(fr))/(1+exp(fr))*100
+        #  return(result)
+        #  })
         
        # PFP <- function(KL{
           #KT=input$Param
@@ -167,7 +183,25 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
       #  return(p)
       #})
 ########################################################################################################## 
-      IOP=reactive({
+      #IOP=reactive({
+      #  TR=m()
+      #  KT=input$Param
+      #  P=length(KT)
+      #  Formula=paste(input$Complication,"~",TR[1],"+")
+      #  for(i in 1:P){
+      #    if(i==P){
+      #      Formula=paste(Formula,TR[i+1],"*",KT[i]) }
+      #    else{
+      #    Formula=paste(Formula,TR[i+1],"*",KT[i],"+")}
+      #  }
+      #  return(Formula)
+      # })
+      
+      observeEvent(input$Add2, { 
+        N2=paste(input$Complication)
+        K2=paste(input$Param,collapse = ",    ")
+        PT=Reduce( paste, deparse(m()) )
+        removeModal()
         TR=m()
         KT=input$Param
         P=length(KT)
@@ -176,22 +210,13 @@ Compls[[3]]=vector()    #Рассчитанная формула с коэффи
           if(i==P){
             Formula=paste(Formula,TR[i+1],"*",KT[i]) }
           else{
-          Formula=paste(Formula,TR[i+1],"*",KT[i],"+")}
+            Formula=paste(Formula,TR[i+1],"*",KT[i],"+")}
         }
-        return(Formula)
-      })
-      
-      observeEvent(input$Add2, { 
-        N2=paste(input$Complication)
-        K2=paste(input$Param,collapse = ",    ")
-        PT=Reduce( paste, deparse(m()) )
-        removeModal()
-        
         insertUI(
           selector = "#CreateComplication",
           where = "afterEnd",
           ui =  fluidPage(br(),
-                          h4(paste(form()))))
+                          h4(paste(Formula)),br(),paste(data2())))
         })
 ##########################################################################################################  
       createArray <- reactive({

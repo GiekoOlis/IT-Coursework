@@ -85,5 +85,32 @@
         bkefr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(bke(), 2), '%'))
         bhsnfr <- reactive(sprintf('<font color="%s">%s  %s</font>','red', round(bhsn(), 2), '%'))
         
-        
+        ###########################################################################
+                                    #ОХ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ОХ:focus{text-align:center;border: solid #df691a;}
+                                    #ЛПНП{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #ЛПНП:focus{text-align:center; border: solid #df691a;}
+                                    #КДР{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #КДР:focus{text-align:center; border: solid #df691a;}
+                                    #ФВ{text-align:center;background-color:#363636; color: #FFFFFF}
+                                    #ФВ:focus{text-align:center;border: solid #df691a;}
+                                    #ДАД{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ДАД:focus{text-align:center;border: solid #df691a;}
+                                    #САД{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #САД:focus{text-align:center;border: solid #df691a;}
+                                    #ЧСС{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЧСС:focus{text-align:center;border: solid #df691a;}
+                                    #ИММЛЖ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ИММЛЖ:focus{text-align:center;border: solid #df691a;}
+                                    #ТГ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ТГ:focus{text-align:center;border: solid #df691a;}
+                                    #ЛПВП{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЛПВП:focus{text-align:center;border: solid #df691a;}
+                                    #ЛП{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #ЛП:focus{text-align:center;border: solid #df691a;}
+                                    #СКФ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #СКФ:focus{text-align:center;border: solid #df691a;}
+                                    #СРБ{text-align:center;background-color:#363636; color: #FFFFFF} 
+                                    #СРБ:focus{text-align:center;border: solid #df691a;}
+                                    
         
