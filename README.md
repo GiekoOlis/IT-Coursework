@@ -13,4 +13,3 @@
 * R
 * HTML
 * CSS
-* JavaScript
